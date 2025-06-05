@@ -29,6 +29,7 @@ Para mais detalhes, consulte `docs/windows11_qubes_template_pt.md`.
 ### Configuração rápida do Ubuntu 24.04
 
 Para preparar uma instalação do Ubuntu 24.04 totalmente em português do Brasil e com aplicativos úteis como Brave, Telegram e OBS Studio, utilize o script `scripts/setup_ubuntu24_ptbr.sh`.
+Ele também possui um modo de diagnóstico para corrigir problemas comuns de pacotes.
 
 1. Dê permissão de execução:
    ```bash
@@ -38,4 +39,9 @@ Para preparar uma instalação do Ubuntu 24.04 totalmente em português do Brasi
    ```bash
    sudo bash scripts/setup_ubuntu24_ptbr.sh
    ```
-   Ele atualizará o sistema, configurará o locale para `pt_BR.UTF-8`, ajustará o fuso horário para São Paulo e instalará os programas indicados.
+   O script atualizará o sistema, configurará o locale para `pt_BR.UTF-8`, ajustará o fuso horário para São Paulo e instalará os programas indicados.
+
+Se precisar apenas rodar um diagnóstico e tentar corrigir pacotes quebrados, utilize a opção `--diagnostic`:
+   ```bash
+   sudo bash scripts/setup_ubuntu24_ptbr.sh --diagnostic
+   ```

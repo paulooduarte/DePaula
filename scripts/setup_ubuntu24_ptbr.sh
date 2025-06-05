@@ -1,11 +1,34 @@
 #!/bin/bash
-# Script para configurar automaticamente o Ubuntu 24.04 em português do Brasil e instalar aplicativos úteis.
+# Script para configurar automaticamente o Ubuntu 24.04 em português do Brasil,
+# instalar aplicativos úteis e realizar um diagnóstico básico do sistema.
 
-set -e
+set -euo pipefail
 
 if [ "$(id -u)" -ne 0 ]; then
   echo "Erro: execute como root." >&2
   exit 1
+fi
+
+run_diagnostic() {
+  echo "==> Verificando conectividade"
+  if ! ping -c1 8.8.8.8 >/dev/null 2>&1; then
+    echo "Sem acesso à internet" >&2
+  else
+    echo "Conexão OK"
+  fi
+
+  echo "==> Corrigindo pacotes quebrados"
+  dpkg --configure -a
+  apt-get -f install -y
+  apt-get update
+  apt-get upgrade -y
+  apt-get autoremove -y
+}
+
+if [[ "${1:-}" == "--diagnostic" ]]; then
+  run_diagnostic
+  echo "Diagnóstico finalizado"
+  exit 0
 fi
 
 # Configura locale e timezone
@@ -16,8 +39,8 @@ localectl set-locale LANG=pt_BR.UTF-8
 timedatectl set-timezone America/Sao_Paulo
 
 # Atualiza sistema
-apt update
-apt -y upgrade
+apt-get update
+apt-get upgrade -y
 
 # Brave browser
 if [ ! -f /usr/share/keyrings/brave-browser-archive-keyring.gpg ]; then
@@ -30,12 +53,12 @@ fi
 apt-get install -y software-properties-common
 add-apt-repository -y ppa:obsproject/obs-studio
 
-apt update
+apt-get update
 
 # Instala pacotes
-apt install -y brave-browser telegram-desktop obs-studio gnome-tweaks
+apt-get install -y brave-browser telegram-desktop obs-studio gnome-tweaks
 
 # Limpeza
-apt autoremove -y
+apt-get autoremove -y
 
 printf '\nConfiguração concluída. Reinicie para aplicar todas as configurações.\n'
