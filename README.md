@@ -41,7 +41,9 @@ Ele também possui um modo de diagnóstico para corrigir problemas comuns de pac
    ```
    O script atualizará o sistema, configurará o locale para `pt_BR.UTF-8`, ajustará o fuso horário para São Paulo e instalará os programas indicados.
 
-Se precisar apenas rodar um diagnóstico e tentar corrigir pacotes quebrados, utilize a opção `--diagnostic`:
+Se precisar apenas rodar um diagnóstico e tentar corrigir pacotes quebrados, utilize a opção `--diagnostic`. É possível também enviar o log para um Gist privado no GitHub ou pedir sugestões ao ChatGPT, definindo previamente as variáveis `GITHUB_TOKEN` e `OPENAI_API_KEY` e passando as opções `--upload-log` e `--chatgpt`:
    ```bash
-   sudo bash scripts/setup_ubuntu24_ptbr.sh --diagnostic
+   export GITHUB_TOKEN=seu_token_do_github
+   export OPENAI_API_KEY=seu_token_openai
+   sudo bash scripts/setup_ubuntu24_ptbr.sh --diagnostic --upload-log --chatgpt
    ```

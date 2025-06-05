@@ -25,8 +25,58 @@ run_diagnostic() {
   apt-get autoremove -y
 }
 
-if [[ "${1:-}" == "--diagnostic" ]]; then
-  run_diagnostic
+DIAG=false
+UPLOAD=false
+CHATGPT=false
+for arg in "$@"; do
+  case "$arg" in
+    --diagnostic) DIAG=true ;;
+    --upload-log) UPLOAD=true ;;
+    --chatgpt) CHATGPT=true ;;
+    *) echo "Uso: $0 [--diagnostic [--upload-log] [--chatgpt]]" >&2; exit 1 ;;
+  esac
+done
+
+upload_log_github() {
+  if [ -z "${GITHUB_TOKEN:-}" ]; then
+    echo "Variável GITHUB_TOKEN não definida. Pulando envio ao GitHub."
+    return
+  fi
+
+  local file="$1"
+  local data
+  data=$(printf '{"description":"Ubuntu setup diagnostic","public":false,"files":{"diagnostic.txt":{"content":"%s"}}}' "$(sed 's/"/\\"/g' "$file")")
+  local resp
+  resp=$(curl -fsS -H "Authorization: token $GITHUB_TOKEN" \
+    -H "Content-Type: application/json" \
+    -d "$data" https://api.github.com/gists)
+  echo "Log enviado para: $(echo "$resp" | grep -o 'https://gist.github.com/[^"]*')"
+}
+
+chatgpt_feedback() {
+  if [ -z "${OPENAI_API_KEY:-}" ]; then
+    echo "Variável OPENAI_API_KEY não definida. Pulando consulta ao ChatGPT."
+    return
+  fi
+
+  local file="$1"
+  local prompt
+  prompt=$(sed 's/"/\\"/g' "$file")
+  local payload
+  payload=$(printf '{"model":"gpt-3.5-turbo","messages":[{"role":"user","content":"Analise o seguinte log e indique possiveis solucoes:\n%s"}]}' "$prompt")
+  local resp
+  resp=$(curl -fsS https://api.openai.com/v1/chat/completions \
+    -H "Content-Type: application/json" \
+    -H "Authorization: Bearer $OPENAI_API_KEY" \
+    -d "$payload")
+  echo "ChatGPT: $(echo "$resp" | grep -o '"content":"[^"]*"' | sed 's/"content":"\(.*\)"/\1/' | sed 's/\\n/\n/g')"
+}
+
+diagnostic_log="/tmp/diagnostic.log"
+if $DIAG; then
+  run_diagnostic | tee "$diagnostic_log"
+  $UPLOAD && upload_log_github "$diagnostic_log"
+  $CHATGPT && chatgpt_feedback "$diagnostic_log"
   echo "Diagnóstico finalizado"
   exit 0
 fi
