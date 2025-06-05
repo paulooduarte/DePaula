@@ -25,3 +25,17 @@ Repositório com scripts e documentos de apoio.
    O script verifica a disponibilidade dos comandos `qvm-*` antes de iniciar e cria o TemplateVM com as configurações recomendadas.
 
 Para mais detalhes, consulte `docs/windows11_qubes_template_pt.md`.
+
+### Configuração rápida do Ubuntu 24.04
+
+Para preparar uma instalação do Ubuntu 24.04 totalmente em português do Brasil e com aplicativos úteis como Brave, Telegram e OBS Studio, utilize o script `scripts/setup_ubuntu24_ptbr.sh`.
+
+1. Dê permissão de execução:
+   ```bash
+   chmod +x scripts/setup_ubuntu24_ptbr.sh
+   ```
+2. Execute como root:
+   ```bash
+   sudo bash scripts/setup_ubuntu24_ptbr.sh
+   ```
+   Ele atualizará o sistema, configurará o locale para `pt_BR.UTF-8`, ajustará o fuso horário para São Paulo e instalará os programas indicados.
