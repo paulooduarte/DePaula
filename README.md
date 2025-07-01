@@ -26,3 +26,14 @@ Repositório com scripts e documentos de apoio.
    O script verifica a disponibilidade dos comandos `qvm-*` antes de iniciar e cria o TemplateVM com as configurações recomendadas.
 
 Para mais detalhes, consulte `docs/windows11_qubes_template_pt.md`.
+
+## Automatizar legendas do Slipknot
+
+Para gerar rapidamente o vídeo legendado mencionado em `docs/slipknot_legendagem_pt.md`, use o script:
+
+```bash
+chmod +x scripts/embed_lyrics.sh
+./scripts/embed_lyrics.sh URL_DO_VIDEO caminho/para/slipknot.ass
+```
+
+Será criado `video_legendado.mp4` no diretório atual.

@@ -49,3 +49,10 @@ ffmpeg -i slipknot.mp4 -vf "ass=slipknot.ass" -c:a copy slipknot_legendado.mp4
 ```
 
 Reproduza `slipknot_legendado.mp4` no VLC. O fundo das legendas será amarelo escuro e a borda preta, mantendo o áudio original.
+
+Alternativamente, utilize o script `scripts/embed_lyrics.sh` para automatizar o processo:
+
+```bash
+chmod +x scripts/embed_lyrics.sh
+./scripts/embed_lyrics.sh URL_DO_VIDEO slipknot.ass
+```
