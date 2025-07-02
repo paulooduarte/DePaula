@@ -4,8 +4,9 @@ Repositório com scripts e documentos de apoio.
 
 ## Conteúdo
 
-- `docs/windows11_qubes_template_pt.md` – guia em português para criação de um TemplateVM do Windows 11 no Qubes OS.
-- `scripts/setup_win11_template.sh` – script auxiliar para iniciar a configuração. Execute-o em **dom0** com privilégio de administrador e indicando a ISO do Windows 11.
+- `docs/slipknot_legendagem_pt.md` – tutorial para baixar o clipe "The Devil In I" e embutir legendas.
+- `scripts/embed_lyrics.sh` – automatiza o download do vídeo e a inclusão das legendas.
+- `scripts/setup_win11_template.sh` – script auxiliar para iniciar a configuração de uma TemplateVM Windows 11 em Qubes OS.
 
 ## Uso rápido
 
@@ -25,3 +26,14 @@ Repositório com scripts e documentos de apoio.
    O script verifica a disponibilidade dos comandos `qvm-*` antes de iniciar e cria o TemplateVM com as configurações recomendadas.
 
 Para mais detalhes, consulte `docs/windows11_qubes_template_pt.md`.
+
+## Automatizar legendas do Slipknot
+
+Para gerar rapidamente o vídeo legendado mencionado em `docs/slipknot_legendagem_pt.md`, use o script:
+
+```bash
+chmod +x scripts/embed_lyrics.sh
+./scripts/embed_lyrics.sh URL_DO_VIDEO caminho/para/slipknot.ass
+```
+
+Será criado `video_legendado.mp4` no diretório atual.
